@@ -33,7 +33,8 @@ class tcl_control:
         while True:
             flag = True
             if self.df_state['takeprofit_hit'].iloc[-1] != 'No':
-                system_logger.info(f'Тейкпрофит достигнут \n{self.df_state}')
+                system_logger.info('Тейкпрофит достигнут')
+                system_logger.info(f'\n{self.df_state["takeprofit_hit"].iloc[-1]}')
                 try:
                     bybit.cancel_orders(df['name'].iloc[-1], df['category'].iloc[-1])
                 except Exception as e:
@@ -60,6 +61,7 @@ class tcl_control:
                 limit=1
             )
             kline = kline['result']['list'][0]
+            print(f'Open: {kline[0]}, Close: {kline[1]}, Low: {kline[3]}, High: {kline[2]}')
 
             low = float(kline[3])
             high = float(kline[2])
