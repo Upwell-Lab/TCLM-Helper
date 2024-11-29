@@ -92,7 +92,7 @@ echo Installing dependencies from system_/packages.txt
 echo Installing dependencies from system_/packages.txt >> "%LOG_FILE%" 2>&1
 call %VENV_DIR%\Scripts\activate
 %VENV_DIR%\Scripts\python.exe -m pip install --upgrade pip >> "%LOG_FILE%" 2>&1
-%VENV_DIR%\Scripts\python.exe -m pip install -r system_\packages.txt >> "%LOG_FILE%" 2>&1
+%VENV_DIR%\Scripts\python.exe -m pip install -r _system\packages.txt >> "%LOG_FILE%" 2>&1
 echo Dependencies installed successfully
 echo Dependencies installed successfully >> "%LOG_FILE%" 2>&1
 
