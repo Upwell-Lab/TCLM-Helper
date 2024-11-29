@@ -55,7 +55,7 @@ class tcl():
                 return leverage
     
     def qty(self, data): #cколько нужно покупать/продавать на каждом ордере
-        D4_TC = 31
+        D4_TC = 33.53
         D3_DD = 4
         D4_DD = 7.4
         D5_DD = 40

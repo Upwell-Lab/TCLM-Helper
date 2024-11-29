@@ -82,9 +82,9 @@ class bybit:
             i = None
         
         if i:
-            system_logger.info(f'leverage set')
+            return True
         else:
-            system_logger.info('leverage not set')
+           return False
         
     def cancel_orders(self, name, category):
         session = HTTP(

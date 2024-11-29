@@ -41,7 +41,10 @@ class tcl_control:
                 break
             else:
                 if self.orders == False:
-                    bybit.set_leverage(df)
+                    x = bybit.set_leverage(df)
+                    if x == False:
+                        system_logger.error(f'Leverage not set')
+                        break
                     try:
                         bybit.set_order(df)
                         self.orders = True
@@ -75,7 +78,6 @@ class tcl_control:
                                     except Exception as e:
                                         system_logger.error(f'Error cancel_orders 2 {e}')
                                         break
-                                time.sleep(2)
                                 from launch import main
                                 main(high, df['fib_0'].iloc[-1], df['category'].iloc[-1], df['name'].iloc[-1])
                                 break
