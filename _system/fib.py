@@ -1,4 +1,6 @@
 from _system.logger import system_logger
+from _system.req.bybit_req import bybit
+bybit = bybit()
 
 class tcl():
     def TCL_fib(self, fib_1, fib_0, category, name): #расчет TCL
@@ -54,8 +56,8 @@ class tcl():
             if result < 1.0:
                 return leverage
     
-    def qty(self, data): #cколько нужно покупать/продавать на каждом ордере
-        D4_TC = 33.53
+    def qty(self, data, wallet): #cколько нужно покупать/продавать на каждом ордере
+        D4_TC = wallet
         D3_DD = 4
         D4_DD = 7.4
         D5_DD = 40
@@ -118,5 +120,6 @@ class tcl():
             'qty_l0': qty1, 
             'qty_l1': qty2,
             'qty_l2': qty3, 
-            'leverage': leverage    
+            'leverage': leverage,
+            'wallet': wallet
         }
