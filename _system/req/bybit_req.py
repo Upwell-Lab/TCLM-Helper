@@ -86,6 +86,21 @@ class bybit:
         else:
            return False
         
+    def get_wallet(self):
+        session = HTTP(
+            testnet=False,
+            api_key=bybit_api,
+            api_secret=bybit_secret,
+        )
+
+        i = session.get_wallet_balance(
+            accountType="UNIFIED",
+            coin="USDT",
+        )
+        
+        i = round(float(i['result']['list'][0]['coin'][0]['walletBalance']), 4)
+        return i
+        
     def cancel_orders(self, name, category):
         session = HTTP(
             testnet=False,
