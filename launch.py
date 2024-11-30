@@ -13,13 +13,14 @@ tcl_control = tcl_control()
 bybit = bybit()
 
 def main(fib_1, fib_0, category, name):
+    wallet = bybit.get_wallet()
     try:
         data = tcl.TCL_fib(fib_1, fib_0, category, name)
     except Exception as e:
         system_logger.error(f'Error TCL_fib {e}')
 
     try:
-        data_2 = tcl.qty(data)
+        data_2 = tcl.qty(data, wallet)
     except Exception as e:
         system_logger.error(f'Error qty {e}')
 
