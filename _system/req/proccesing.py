@@ -61,7 +61,6 @@ class tcl_control:
                 limit=1
             )
             kline = kline['result']['list'][0]
-            print(f'Open: {kline[0]}, Close: {kline[1]}, Low: {kline[3]}, High: {kline[2]}')
 
             low = float(kline[3])
             high = float(kline[2])
