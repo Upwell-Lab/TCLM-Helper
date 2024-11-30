@@ -86,6 +86,28 @@ class bybit:
         else:
            return False
         
+    def set_leverage_def(self, df):
+        session = HTTP(
+            testnet=False,
+            api_key=bybit_api,
+            api_secret=bybit_secret,
+        )
+        
+        try:
+            i = session.set_leverage(
+                category=df['category'].iloc[-1],
+                symbol=df['name'].iloc[-1],
+                buyLeverage='1',
+                sellLeverage='1',
+            )
+        except Exception:
+            i = None
+        
+        if i:
+            return True
+        else:
+           return False
+        
     def get_wallet(self):
         session = HTTP(
             testnet=False,
@@ -97,7 +119,7 @@ class bybit:
             accountType="UNIFIED",
             coin="USDT",
         )
-        
+
         i = round(float(i['result']['list'][0]['coin'][0]['walletBalance']), 4)
         return i
         
