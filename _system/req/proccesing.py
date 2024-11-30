@@ -44,18 +44,17 @@ class tcl_control:
                 break
             else:
                 if self.orders == False:
-                    for _ in range(4):
-                        x = bybit.set_leverage(df)
-                        if x == False:
-                            y = bybit.set_leverage_def(df)
-                            if y == False:
-                                system_logger.error('Leverage not set')
-                                break
-                            else:
-                                break
-                        else:
-                            system_logger.info('Leverage set successfully')
+                    x = bybit.set_leverage_def(df)
+                    time.sleep(2)
+                    if x == True:
+                        y = bybit.set_leverage(df)
+                        if y == False:
+                            system_logger.error('Error setting leverage')
                             break
+                    else:
+                        system_logger.error('Error setting leverage_def')
+                        break
+
                     try:
                         bybit.set_order(df)
                         self.orders = True
