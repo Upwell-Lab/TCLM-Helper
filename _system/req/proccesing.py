@@ -18,6 +18,8 @@ class tcl_control:
 
     def getdata(self, data):
         df = pd.DataFrame(data, index=[0])
+        pd.set_option('display.max_columns', None)
+        pd.set_option('display.max_rows', None)
 
         with open ("_system/settings.json", "r") as f:
             settings = json.load(f)
@@ -42,10 +44,18 @@ class tcl_control:
                 break
             else:
                 if self.orders == False:
-                    x = bybit.set_leverage(df)
-                    if x == False:
-                        system_logger.error(f'Leverage not set')
-                        break
+                    for _ in range(4):
+                        x = bybit.set_leverage(df)
+                        if x == False:
+                            y = bybit.set_leverage_def(df)
+                            if y == False:
+                                system_logger.error('Leverage not set')
+                                break
+                            else:
+                                break
+                        else:
+                            system_logger.info('Leverage set successfully')
+                            break
                     try:
                         bybit.set_order(df)
                         self.orders = True
@@ -61,6 +71,7 @@ class tcl_control:
                 limit=1
             )
             kline = kline['result']['list'][0]
+            system_logger.info(f'Open: {kline[1]} High: {kline[2]} Low: {kline[3]} Close: {kline[4]}')
 
             low = float(kline[3])
             high = float(kline[2])
@@ -109,19 +120,20 @@ class tcl_control:
                 if df['type'].iloc[-1] == 'Long' and flag:
                     if low <= df['limit0'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'No':
                         self.df_state.loc[0, 'hit'] = 'L0'
-                        system_logger.info(f'Поставлен L0 -\n {df}')
-                        try:
-                            pass #tcl_l0(type_)
-                        except Exception as e:
-                            system_logger.error(f'Ошибка открытия позиции - {e}')
+                        system_logger.info(f'Поставлен L0')
+                        system_logger.info(f'{df}')
                     elif high >= df['takeprofit'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L0':
                         self.df_state.loc[0, 'takeprofit_hit'] = 'TP0'
                     elif low <= df['limit1'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L0':
                         self.df_state.loc[0, 'hit'] = 'L1'
+                        system_logger.info('Поставлен L1')
+                        system_logger.info(f'{df}')
                     elif high >= df['takeprofit1'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L1':
                         self.df_state.loc[0, 'takeprofit_hit'] = 'TP1'
                     elif low <= df['limit2'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L1':
                         self.df_state.loc[0, 'hit'] = 'L2'
+                        system_logger.info('Поставлен L2')
+                        system_logger.info(f'{df}')
                     elif high >= df['takeprofit2'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L2':
                         self.df_state.loc[0, 'takeprofit_hit'] = 'TP2'
                     elif low <= df['stoploss'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L2':
@@ -130,19 +142,20 @@ class tcl_control:
                 elif df['type'].iloc[-1] == 'Short' and flag:
                     if high >= df['limit0'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'No':
                         self.df_state.loc[0, 'hit'] = 'L0'
-                        system_logger.info(f'Поставлен L0 -\n {df}')
-                        try:
-                            pass #tcl_l0(type_)
-                        except Exception as e:
-                            system_logger.error(f'Ошибка открытия позиции - {e}')
+                        system_logger.info(f'Поставлен L0')
+                        system_logger.info(f'{df}')
                     elif low <= df['takeprofit'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L0':
                         self.df_state.loc[0, 'takeprofit_hit'] = 'TP0'
                     elif high >= df['limit1'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L0':
                         self.df_state.loc[0, 'hit'] = 'L1'
+                        system_logger.info('Поставлен L1')
+                        system_logger.info(f'{df}')
                     elif low <= df['takeprofit1'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L1':
                         self.df_state.loc[0, 'takeprofit_hit'] = 'TP1'
                     elif high >= df['limit2'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L1':
                         self.df_state.loc[0, 'hit'] = 'L2'
+                        system_logger.info('Поставлен L2')
+                        system_logger.info(f'{df}')
                     elif low <= df['takeprofit2'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L2':
                         self.df_state.loc[0, 'takeprofit_hit'] = 'TP2'
                     elif high >= df['stoploss'].iloc[-1] and self.df_state['hit'].iloc[-1] == 'L2':
