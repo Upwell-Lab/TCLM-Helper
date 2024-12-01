@@ -45,7 +45,6 @@ class tcl_control:
             else:
                 if self.orders == False:
                     x = bybit.set_leverage_def(df)
-                    time.sleep(2)
                     if x == True:
                         y = bybit.set_leverage(df)
                         if y == False:
