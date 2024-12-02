@@ -60,7 +60,7 @@ class tcl():
         D4_TC = wallet
         D3_DD = 4
         D4_DD = 7.4
-        D5_DD = 40
+        D5_DD = 26.67 #40
         C6_TC = data['limit0']
         C7_TC = data['takeprofit']
         C8_TC = data['stoploss']
@@ -88,9 +88,9 @@ class tcl():
         D13_TC = D6_TC * 3  # qty1
         D14_TC = D6_TC * 5  # qty2
 
-        qty1 = round(D6_TC)
-        qty2 = round(D13_TC)
-        qty3 = round(D14_TC)
+        qty1 = round(D6_TC, 1)
+        qty2 = round(D13_TC, 1)
+        qty3 = round(D14_TC, 1)
 
         if data['type'] == 'Long':
             E13_TC = A2_DD + ((A5_DD / D3_DD) * A2_DD)
